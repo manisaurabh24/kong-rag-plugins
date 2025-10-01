@@ -5,8 +5,8 @@ Two Kong plugins enabling production-ready Retrieval-Augmented Generation (RAG):
 
 ## Custom Plugins
 
-- doc-embedder:
-- rag-retriever
+- doc-embedder: Accepts raw documents, chunks the text, generates embeddings with Azure OpenAI, and writes HASH records into Redis that include content, metadata, and packed Float32 vectors for fast vector search.
+- rag-retriever: Takes a user query, creates its embedding, executes a RediSearch KNN over the stored vectors, and returns structured top‑k relevant chunks ready to prepend to the LLM prompt
 
 ## Highlights
 
@@ -457,25 +457,65 @@ Notes:
 
 ### Roadmap and use cases
 
- Area  Future enhancement  Notes 
- :--  :--  :-- 
- Governance  Central policy pack: rate limits, PII redaction, schema validation, audit logs  Enforce with global plugins and schema validation on POST bodies before embedding; add structured audit of doc IDs and metadata fields.  
- Security  mTLS to Redis, at‑rest encryption for vectors, KMS‑backed key rotation  Use rediss and client certs; consider encrypting metadata fields; rotate Azure keys via CI/CD secrets. 
- RBAC  Per‑route scopes for embed vs retrieve, service‑level JWT/OAuth  Gate /v1/embed to ingestion roles; restrict /v1/rag to app clients; align with Kong identity providers.  
- Observability  Vector op metrics, KNN latency histograms, chunking/error dashboards  Emit custom metrics on chunk counts, bytes stored, FT.SEARCH latency; correlate with route/service.  
- Index mgmt  On‑write upsert helpers, index warmers, auto‑reindex hooks  External job to manage FT.CREATE/ALTER, cardinality checks, DIM/type consistency. 
- Models  Pluggable embedding backends, dim auto‑detect, mixed‑model migration  Support text‑embedding‑3‑small/large; ensure DIM adheres to model; enable downsampling for cost.  
- Relevance  Hybrid search (BM25+KNN), semantic rerankers, MMR/diversity  Combine RediSearch text fields with KNN; post‑rank via LLM/reranker for improved context quality. 
- Chunking  Adaptive splitters, overlap tuning, media/doc types  Tune chunk_size/overlap by doc type; add PDF/HTML extraction pipelines before embed.  
- Caching  Query embedding cache and retrieval cache  Cache frequent query vectors and top‑k results with TTL to reduce compute and Redis load. 
+ # Vector Service Governance & Architecture 
 
- Industry  Use case  Governance angle 
- :--  :--  :-- 
- Retail  Product Q\&A, policy‑aware support copilots  Enforce SKU/region visibility; redact PII; audit who ingested catalogs. 
- Banking  Knowledge copilots for policies and procedures  Strict RBAC by business unit; mTLS to Redis; encrypt sensitive metadata.  
- Telco  Troubleshooting assistants with device manuals  Rate limit ingestion; validate document MIME/types; observability for spike detection.  
- Manufacturing  Field service copilots with SOPs  Versioned embeddings per SOP release; index lifecycle and rollbacks. 
- Healthcare  Care pathway retrieval (de‑identified)  PHI scrubbing pre‑embed; access logging; DIM consistency validation jobs. 
+## Governance
+- **Central policy pack**: rate limits, PII redaction, schema validation, audit logs  
+- Enforce with global plugins and schema validation on POST bodies before embedding  
+- Add structured audit of doc IDs and metadata fields  
+
+## Security
+- **Transport & storage**: mTLS to Redis, at-rest encryption for vectors, KMS-backed key rotation  
+- Use `rediss://` and client certs  
+- Consider encrypting metadata fields  
+- Rotate Azure keys via CI/CD secrets  
+
+## RBAC
+- **Scopes & roles**: per-route scopes for embed vs retrieve, service-level JWT/OAuth  
+- Gate `/v1/embed` to ingestion roles  
+- Restrict `/v1/rag` to app clients  
+- Align with Kong identity providers  
+
+## Observability
+- **Metrics & dashboards**: vector op metrics, KNN latency histograms, chunking/error dashboards  
+- Emit custom metrics on chunk counts, bytes stored, `FT.SEARCH` latency  
+- Correlate with route/service  
+
+## Index Management
+- **Helpers & jobs**: on-write upsert helpers, index warmers, auto-reindex hooks  
+- External job to manage `FT.CREATE/ALTER`, cardinality checks, DIM/type consistency  
+
+## Models
+- **Pluggable backends**: dim auto-detect, mixed-model migration  
+- Support `text-embedding-3-small/large`  
+- Ensure DIM adheres to model  
+- Enable downsampling for cost  
+
+## Relevance
+- **Search quality**: hybrid search (BM25+KNN), semantic rerankers, MMR/diversity  
+- Combine RediSearch text fields with KNN  
+- Post-rank via LLM/reranker for improved context quality  
+
+## Chunking
+- **Splitting strategy**: adaptive splitters, overlap tuning, media/doc types  
+- Tune `chunk_size/overlap` by doc type  
+- Add PDF/HTML extraction pipelines before embed  
+
+## Caching
+- **Performance**: query embedding cache and retrieval cache  
+- Cache frequent query vectors and top-k results with TTL  
+- Reduce compute and Redis load  
+
+### Industry Use Cases & Governance Angles
+
+| Industry       | Use Case                                    | Governance Angle                                                                 |
+|----------------|---------------------------------------------|----------------------------------------------------------------------------------|
+| **Retail**     | Product Q&A, policy-aware support copilots  | Enforce SKU/region visibility; redact PII; audit who ingested catalogs.           |
+| **Banking**    | Knowledge copilots for policies/procedures  | Strict RBAC by business unit; mTLS to Redis; encrypt sensitive metadata.          |
+| **Telco**      | Troubleshooting assistants with device manuals | Rate limit ingestion; validate document MIME/types; observability for spike detection. |
+| **Manufacturing** | Field service copilots with SOPs          | Versioned embeddings per SOP release; index lifecycle and rollbacks.              |
+| **Healthcare** | Care pathway retrieval (de-identified)      | PHI scrubbing pre-embed; access logging; DIM consistency validation jobs.         |
+
 
 ### Notes on embedding dimensions
 
