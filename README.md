@@ -2,6 +2,9 @@
 # RAG Injector \& Retriever for Kong
 
 Two Kong plugins enabling production-ready Retrieval-Augmented Generation (RAG): an injector that chunks and embeds documents into Redis using Azure OpenAI, and a retriever that performs KNN vector search to return top‑k relevant chunks for LLM prompts.
+<p align="center" width="100%">
+    <img src="assets/overview.png">
+</p>
 
 ## Custom Plugins
 
