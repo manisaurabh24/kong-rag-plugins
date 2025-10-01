@@ -1,61 +1,59 @@
 # RAG Injector \& Retriever for Kong
 
-Two Kong plugins enabling production-ready Retrieval-Augmented Generation (RAG): an injector that chunks and embeds documents into Redis using Azure OpenAI, and a retriever that performs KNN vector search to return top‑k relevant chunks for LLM prompts.[^11][^12]
+Two Kong plugins enabling production-ready Retrieval-Augmented Generation (RAG): an injector that chunks and embeds documents into Redis using Azure OpenAI, and a retriever that performs KNN vector search to return top‑k relevant chunks for LLM prompts.
 
 ## Repo name
 
-kong-rag-injector-retriever. Short, descriptive, kebab‑case, and discoverable within the Kong ecosystem.[^13][^14]
+kong-rag-plugin
 
 ## Highlights
 
-- Doc Embedder (doc-embedder): POST documents, chunk text, generate embeddings, and store content + metadata + packed float32 vectors in Redis.[^15][^11]
-- RAG Retriever (rag-retriever): POST a query, generate an embedding, run RediSearch KNN, and get structured top‑k results.[^12][^16]
-- Clear JSON contracts, robust error handling, TLS to Redis (rediss), and encrypted/referenceable API keys in schema.[^16][^11][^12][^15]
-
+- Doc Embedder (doc-embedder): POST documents, chunk text, generate embeddings, and store content + metadata + packed float32 vectors in Redis.
+- RAG Retriever (rag-retriever): POST a query, generate an embedding, run RediSearch KNN, and get structured top‑k results.
+- Clear JSON contracts, robust error handling, TLS to Redis (rediss), and encrypted/referenceable API keys in schema.
 
 ## Direct download links
 
 Replace OWNER/REPO/BRANCH with actual values after pushing to GitHub.
 
 - Download rag-retriever/schema.lua:
-    - https://raw.githubusercontent.com/OWNER/REPO/BRANCH/kong/plugins/rag-retriever/schema.lua[^17][^18]
+    - https://raw.githubusercontent.com/OWNER/REPO/BRANCH/kong/plugins/rag-retriever/schema.lua
 - Download rag-retriever/handler.lua:
-    - https://raw.githubusercontent.com/OWNER/REPO/BRANCH/kong/plugins/rag-retriever/handler.lua[^18][^17]
+    - https://raw.githubusercontent.com/OWNER/REPO/BRANCH/kong/plugins/rag-retriever/handler.lua
 - Download doc-embedder/schema.lua:
-    - https://raw.githubusercontent.com/OWNER/REPO/BRANCH/kong/plugins/doc-embedder/schema.lua[^17][^18]
+    - https://raw.githubusercontent.com/OWNER/REPO/BRANCH/kong/plugins/doc-embedder/schema.lua
 - Download doc-embedder/handler.lua:
-    - https://raw.githubusercontent.com/OWNER/REPO/BRANCH/kong/plugins/doc-embedder/handler.lua[^18][^17]
-
-Tip: For immutable permalinks, use a commit SHA instead of BRANCH. For packaged artifacts, prefer Release assets and link from README.[^19][^20]
+    - https://raw.githubusercontent.com/OWNER/REPO/BRANCH/kong/plugins/doc-embedder/handler.lua
+Tip: For immutable permalinks, use a commit SHA instead of BRANCH. For packaged artifacts, prefer Release assets and link from README
 
 ## Architecture
 
-- Execution: both plugins run in the access phase; retriever priority 900, embedder 800.[^11][^12]
-- Vector store: Redis with RediSearch stores float32 binary vectors in HASHes under a configurable prefix; index management is external.[^11]
-- Embeddings: Azure OpenAI for both ingestion and retrieval to ensure consistent vector space (default 1536 dims).[^15][^16]
+- Execution: both plugins run in the access phase; retriever priority 900, embedder 800.
+- Vector store: Redis with RediSearch stores float32 binary vectors in HASHes under a configurable prefix; index management is external.
+- Embeddings: Azure OpenAI for both ingestion and retrieval to ensure consistent vector space (default 1536 dims).
 
 
 ## Repository structure
 
-- kong/plugins/doc-embedder/handler.lua[^11]
-- kong/plugins/doc-embedder/schema.lua[^15]
-- kong/plugins/rag-retriever/handler.lua[^12]
-- kong/plugins/rag-retriever/schema.lua[^16]
-- scripts/setup.sh (example FT.CREATE and Admin API calls — suggested)[^12][^11]
+- kong/plugins/doc-embedder/handler.lua
+- kong/plugins/doc-embedder/schema.lua
+- - kong/plugins/rag-retriever/handler.lua
+- kong/plugins/rag-retriever/schema.lua
+- scripts/setup.sh (example FT.CREATE and Admin API calls — suggested)
 
 
 ## Prerequisites
 
-- Kong Gateway (OSS/EE), Redis with RediSearch, Azure OpenAI embedding deployment and API key.[^12][^11]
-- A pre‑created RediSearch index (example below).[^11]
+- Kong Gateway (OSS/EE), Redis with RediSearch, Azure OpenAI embedding deployment and API key.
+- A pre‑created RediSearch index (example below).
 
 
 ## Installation
 
 1) Copy plugin files into Kong:
 
-- doc-embedder → kong/plugins/doc-embedder/{handler.lua,schema.lua}[^15][^11]
-- rag-retriever → kong/plugins/rag-retriever/{handler.lua,schema.lua}[^16][^12]
+- doc-embedder → kong/plugins/doc-embedder/{handler.lua,schema.lua}
+- rag-retriever → kong/plugins/rag-retriever/{handler.lua,schema.lua}
 
 2) Enable plugins in kong.conf:
 
