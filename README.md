@@ -56,7 +56,7 @@ The easiest way to install the plugin is using `luarocks`.
 
 ```
 
-luarocks install [https://github.com/manisaurabh24/kongversation-plugin/blob/main/kongversation-plugin/kongversation-…](https://github.com/manisaurabh24/kongversation-plugin/blob/main/kongversation-plugin/kongversation-plugin-1.0-1.all.rock)
+luarocks install [https://github.com/manisaurabh24/kong-rag-plugins/blob/main/kong-rag-plugins/kongversation-…](https://github.com/manisaurabh24/kong-rag-plugins/blob/main/kong-rag-plugins/kong-rag-plugins-1.0-1.all.rock)
 
 ```
 
@@ -69,7 +69,7 @@ Add the custom plugin’s name to the list of plugins in your Kong configuration
 
 ```conf
 
-plugins = bundled, kongversation-plugin
+plugins = bundled, kong-rag-plugins
 
 ```
 
@@ -83,9 +83,9 @@ plugins:
 
   configMaps:
 
-  - name: kongversation-plugin
+  - name: kong-rag-plugins
 
-    pluginName: kongversation-plugin
+    pluginName: kong-rag-plugins
 
 ```
 
@@ -232,8 +232,8 @@ curl -X POST [http://localhost:8000/v1/rag](http://localhost:8000/v1/rag)   -H
 }'
 
 {"total":3,"docs":[{"metadata":"{\"source\":\"docs.pdf\"}","content":"Distributed backpressure is a mechanism to prevent system overload.","id":"doc:677c7872-57d5-4935-bd08-95cf6ae7b5b7"},{"metadata":"{\"source\":\"architecture.pdf\",\"topic\":\"backpressure\"}","content":"Distributed backpressure is a mechanism to prevent system overload by controlling data flow rates across multiple services.","id":"doc:36d7cefa-2a17-48e7-8695-a85e73df3778"},{"metadata":"{\"author\":\"Alice\",\"source\":\"doc.pdf\"}","content":"This document covers distributed backpressure.","id":"doc:5654cc49-4ba5-4167-9c3e-dc7ffeab1cca"}]}(base)
-kongversation-plugin/kongversation-plugin/kongversation-plugin-1.0-1.all.rock at main · manisaurabh24/kongversation-plugin
-Stateless LLMs with Smart Contextual Memory using Kong Gateway - manisaurabh24/kongversation-plugin
+kong-rag-plugins/kong-rag-plugins/kong-rag-plugins-1.0-1.all.rock at main · manisaurabh24/kong-rag-plugins
+Stateless LLMs with Smart Contextual Memory using Kong Gateway - manisaurabh24/kong-rag-plugins
 also add section in table format for future enhancement and inducty use cases  (cover govnance aspect , rbac etc
 
 Here’s a polished, GitHub‑ready README in Markdown for “RAG Injector \& Retriever for Kong,” with clear setup, config, testing, and a comparison-style roadmap and industry use cases table.
@@ -316,13 +316,13 @@ luarocks install ./your-plugin-1.0-1.all.rock
 - kong.conf:
 
 ```
-plugins = bundled, kongversation-plugin
+plugins = bundled, kong-rag-plugins
 ```
 
 - Or via env:
 
 ```
-export KONG_PLUGINS="bundled,kongversation-plugin"
+export KONG_PLUGINS="bundled,kong-rag-plugins"
 ```
 
 Kubernetes (Helm):
