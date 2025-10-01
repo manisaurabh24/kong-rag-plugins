@@ -139,48 +139,4 @@ Retrieve top‑k[^12]
 
 ## License
 
-MIT (suggested).[^11][^12]
-<span style="display:none">[^1][^10][^2][^3][^4][^5][^6][^7][^8][^9]</span>
-
-<div align="center">⁂</div>
-
-[^1]: https://stackoverflow.com/questions/19699059/print-directory-file-structure-with-icons-for-representation-in-markdown
-
-[^2]: https://www.markdownguide.org/basic-syntax/
-
-[^3]: https://gist.github.com/whoisryosuke/813186b07e6c9e4d23593041827a6530
-
-[^4]: https://markdown-it.github.io
-
-[^5]: https://www.w3schools.io/file/markdown-folder-tree/
-
-[^6]: https://dev.to/developerehsan/how-to-easily-create-folder-structure-in-readme-markdown-with-two-simple-steps-3i42
-
-[^7]: https://www.markdownguide.org/hacks/
-
-[^8]: https://quarto.org/docs/authoring/markdown-basics.html
-
-[^9]: https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
-
-[^10]: https://www.markdownguide.org/getting-started/
-
-[^11]: handler.lua
-
-[^12]: handler.lua
-
-[^13]: https://github.com/Kong/kong-plugin
-
-[^14]: https://stackoverflow.com/questions/11947587/is-there-a-naming-convention-for-git-repositories
-
-[^15]: schema.lua
-
-[^16]: schema.lua
-
-[^17]: https://stackoverflow.com/questions/8779197/how-to-link-files-directly-from-github-raw-github-com
-
-[^18]: https://github.com/orgs/community/discussions/44370
-
-[^19]: https://docs.github.com/en/repositories/working-with-files/using-files/getting-permanent-links-to-files
-
-[^20]: https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
 

@@ -21,11 +21,11 @@ services:
     plugins:
       - name: doc-embedder
         config:
-          azure_endpoint: "https://btgazureopenai.openai.azure.com"
+          azure_endpoint: ${azure_endpoint}
           deployment: "BTG_text-embedding-ada-002"
           api_version: "2025-01-01-preview"
-          azure_api_key: "b7a813d6bdd8487c954991961f6d174e"
-          redis_url: "redis://default:ie5sXEVDGqZcpf8T3secGPGc3z8FB8aF@redis-15934.crce206.ap-south-1-1.ec2.redns.redis-cloud.com:15934"
+          azure_api_key: "${azure_api_key}"
+          redis_url: "redis://default:${redis_pwd}@redis-15934.crce206.ap-south-1-1.ec2.redns.redis-cloud.com:15934"
           redis_index: "hr_mitr_index"
           redis_prefix: "doc:"
           chunk_size: 500
@@ -45,11 +45,11 @@ services:
     plugins:
       - name: rag-retriever
         config:
-          azure_endpoint: "https://btgazureopenai.openai.azure.com"
+          azure_endpoint: ${azure_endpoint}
           deployment: "BTG_text-embedding-ada-002"
           api_version: "2025-01-01-preview"
-          azure_api_key: "b7a813d6bdd8487c954991961f6d174e"
-          redis_url: "redis://default:ie5sXEVDGqZcpf8T3secGPGc3z8FB8aF@redis-15934.crce206.ap-south-1-1.ec2.redns.redis-cloud.com:15934"
+          azure_api_key: "${azure_api_key}"
+          redis_url: "redis://default:${redis_pwd}@redis-15934.crce206.ap-south-1-1.ec2.redns.redis-cloud.com:15934"
           redis_index: "hr_mitr_index"
           redis_prefix: "doc:"
           embedding_dim: 1536

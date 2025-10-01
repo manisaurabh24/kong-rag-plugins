@@ -9,7 +9,7 @@ _info:
 
 services:
   - name: ai-chat-with-rag
-    url: https://btgazureopenai.openai.azure.com
+    url: https://${azure_instance}.openai.azure.com
     routes:
       - name: chat-route
         paths:
@@ -22,14 +22,14 @@ services:
           embeddings:
             auth:
               header_name: api-key
-              header_value: b7a813d6bdd8487c954991961f6d174e
+              header_value: ${api-key}
             model:
               provider: azure
-              name: BTG_text-embedding-ada-002
+              name: ${embedding_name}
               options:
-                azure_instance: btgazureopenai
-                azure_api_version: "2024-05-01-preview"
-                azure_deployment_id: BTG_text-embedding-ada-002
+                azure_instance: ${azure_instance}
+                azure_api_version: ${azure_api_version}
+                azure_deployment_id: ${azure_deployment_id}
           
           vectordb:
             strategy: redis
@@ -37,7 +37,7 @@ services:
               host: redis-15934.crce206.ap-south-1-1.ec2.redns.redis-cloud.com
               port: 15934
               username: default
-              password: ie5sXEVDGqZcpf8T3secGPGc3z8FB8aF
+              password: ${redis_pwd}
               ssl: false
               index:
                 name: hr_mitr_index
@@ -52,14 +52,14 @@ services:
           route_type: llm/v1/chat
           auth:
             header_name: api-key
-            header_value: b7a813d6bdd8487c954991961f6d174e
+            header_value: ${api-key}
           model:
             provider: azure
-            name: TCSOAI_GPT4o_2024-08-01
+            name: ${azure_deployment_id}
             options:
-              azure_instance: btgazureopenai
-              azure_api_version: "2024-02-15-preview"
-              azure_deployment_id: TCSOAI_GPT4o_2024-08-01
+              azure_instance: ${azure_instance}
+              azure_api_version: "${azure_api_version}"
+              azure_deployment_id: ${azure_deployment_id}
 
   - name: doc-ingestion
     url: http://localhost:8080
@@ -72,11 +72,11 @@ services:
     plugins:
       - name: doc-embedder
         config:
-          azure_endpoint: "https://btgazureopenai.openai.azure.com"
+          azure_endpoint: "https://${azure_instance}.openai.azure.com"
           deployment: "BTG_text-embedding-ada-002"
-          api_version: "2025-01-01-preview"
-          azure_api_key: "b7a813d6bdd8487c954991961f6d174e"
-          redis_url: "redis://default:ie5sXEVDGqZcpf8T3secGPGc3z8FB8aF@redis-15934.crce206.ap-south-1-1.ec2.redns.redis-cloud.com:15934"
+          api_version: ${api_version}
+          azure_api_key: "${api_key}"
+          redis_url: "redis://default:${redis_pwd}@redis-15934.crce206.ap-south-1-1.ec2.redns.redis-cloud.com:15934"
           redis_index: "hr_mitr_index"
           redis_prefix: "doc:"
           chunk_size: 500
