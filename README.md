@@ -1,9 +1,3 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
-
-# provide response in .md file
-
-Below is a complete README.md you can save as a .md file.
-
 # RAG Injector \& Retriever for Kong
 
 Two Kong plugins enabling production-ready Retrieval-Augmented Generation (RAG): an injector that chunks and embeds documents into Redis using Azure OpenAI, and a retriever that performs KNN vector search to return top‑k relevant chunks for LLM prompts.[^11][^12]
