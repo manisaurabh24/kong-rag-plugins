@@ -1,0 +1,85 @@
+_format_version: "3.0"
+_transform: true
+_konnect:
+  control_plane_name: tcsai
+
+_info:
+  select_tags:
+  - ai_rag
+
+services:
+  - name: ai-chat-with-rag
+    url: https://btgazureopenai.openai.azure.com
+    routes:
+      - name: chat-route
+        paths:
+          - /v1/chat/completions
+        methods:
+          - POST
+    plugins:
+      - name: ai-rag-injector
+        config:
+          embeddings:
+            auth:
+              header_name: api-key
+              header_value: b7a813d6bdd8487c954991961f6d174e
+            model:
+              provider: azure
+              name: BTG_text-embedding-ada-002
+              options:
+                azure_instance: btgazureopenai
+                azure_api_version: "2024-05-01-preview"
+                azure_deployment_id: BTG_text-embedding-ada-002
+          
+          vectordb:
+            strategy: redis
+            redis:
+              host: redis-15934.crce206.ap-south-1-1.ec2.redns.redis-cloud.com
+              port: 15934
+              username: default
+              password: ie5sXEVDGqZcpf8T3secGPGc3z8FB8aF
+              ssl: false
+              index:
+                name: hr_mitr_index
+                metric: cosine
+                dimensions: 1536
+          
+          top_k: 5
+          threshold: 0.7
+      
+      - name: ai-proxy
+        config:
+          route_type: llm/v1/chat
+          auth:
+            header_name: api-key
+            header_value: b7a813d6bdd8487c954991961f6d174e
+          model:
+            provider: azure
+            name: TCSOAI_GPT4o_2024-08-01
+            options:
+              azure_instance: btgazureopenai
+              azure_api_version: "2024-02-15-preview"
+              azure_deployment_id: TCSOAI_GPT4o_2024-08-01
+
+  - name: doc-ingestion
+    url: http://localhost:8080
+    routes:
+      - name: ingest-route
+        paths:
+          - /v1/ingest
+        methods:
+          - POST
+    plugins:
+      - name: doc-embedder
+        config:
+          azure_endpoint: "https://btgazureopenai.openai.azure.com"
+          deployment: "BTG_text-embedding-ada-002"
+          api_version: "2025-01-01-preview"
+          azure_api_key: "b7a813d6bdd8487c954991961f6d174e"
+          redis_url: "redis://default:ie5sXEVDGqZcpf8T3secGPGc3z8FB8aF@redis-15934.crce206.ap-south-1-1.ec2.redns.redis-cloud.com:15934"
+          redis_index: "hr_mitr_index"
+          redis_prefix: "doc:"
+          chunk_size: 500
+          chunk_overlap: 50
+          max_chunks: 50
+          embedding_dim: 1536
